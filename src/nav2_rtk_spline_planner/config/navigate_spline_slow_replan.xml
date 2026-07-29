@@ -1,0 +1,17 @@
+<!--
+  MPPI Local Deviation 行为树。
+  RTK 样条本身静态，降低重规划频率，避免绕障过程中频繁替换局部控制器路径。
+-->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <PipelineSequence name="NavigateWithSlowReplanning">
+      <RateController hz="0.2">
+        <ComputePathToPose
+          goal="{goal}"
+          path="{path}"
+          planner_id="RtkSplinePlanner"/>
+      </RateController>
+      <FollowPath path="{path}" controller_id="FollowPath"/>
+    </PipelineSequence>
+  </BehaviorTree>
+</root>

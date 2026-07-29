@@ -1,0 +1,43 @@
+# =============================================================================
+# RTK Spline Planner — Nav2 Planner Server 参数配置示例
+#
+# 在 Nav2 launch 文件中，将 planner_server 的参数指向此文件，
+# 或将下面内容合并到你现有的 nav2_params.yaml 中。
+# =============================================================================
+
+planner_server:
+  ros__parameters:
+    planner_plugins: ["RtkSplinePlanner"]
+
+    RtkSplinePlanner:
+      plugin: "nav2_rtk_spline_planner/RtkSplinePlanner"
+
+      # 沿 spline 采样间距（米），值越小路径越密集
+      path_resolution: 0.1
+
+      # 在 spline 上搜索最近投影点的弧长范围（米）
+      # 对于 850m 铁路线路，可以设为 -1 表示全局搜索，或设为合理值如 100.0
+      search_radius: 100.0
+
+      # 是否通过 topic 动态接收 waypoint（nav_msgs/Path）
+      # false = 仅从下方 waypoints 参数加载
+      use_waypoint_topic: false
+      waypoint_topic: "rtk_waypoints"
+
+      # 是否在输出路径上逐点检查 costmap 碰撞
+      # true 时，遇到 LETHAL 会截断路径（适合保守策略）
+      # false 时，完全信任 spline，由 Controller 层负责避障
+      check_costmap_collision: false
+
+      # RTK waypoints（map 坐标系下，flat list: [x1, y1, x2, y2, ...]）
+      # 实际使用时替换为你的 RTK 转换后的 map 坐标
+      waypoints: [
+        0.0,   0.0,
+        50.0,  0.5,
+        100.0, 1.0,
+        200.0, 0.8,
+        400.0, 0.0,
+        600.0, -0.5,
+        800.0, -0.2,
+        850.0, 0.0
+      ]

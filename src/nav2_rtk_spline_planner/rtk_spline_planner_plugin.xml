@@ -1,0 +1,10 @@
+<library path="nav2_rtk_spline_planner">
+  <class name="nav2_rtk_spline_planner/RtkSplinePlanner"
+         type="nav2_rtk_spline_planner::RtkSplinePlanner"
+         base_class_type="nav2_core::GlobalPlanner">
+    <description>
+      Global planner that interpolates RTK waypoints with cubic splines
+      for railway inspection robots.
+    </description>
+  </class>
+</library>

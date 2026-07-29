@@ -1,0 +1,34 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        ROS_DISTRO: humble
+    image: planner_plugin_test:humble-dev
+    container_name: planner_plugin_test_dev
+    volumes:
+      - .:/ws
+    network_mode: host
+    ipc: host
+    stdin_open: true
+    tty: true
+    command: bash
+
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: planner_plugin_test:humble-dev
+    container_name: planner_plugin_test_build
+    volumes:
+      - .:/ws
+    network_mode: host
+    command: >
+      bash -c "
+        source /opt/ros/humble/setup.bash &&
+        vcs import src < navigation2.repos &&
+        rosdep update &&
+        rosdep install -y --from-paths src --ignore-src --rosdistro humble || true &&
+        colcon build --symlink-install
+      "
